@@ -1,0 +1,9 @@
+[
+  [1, "Sociocultural", "TBL", "sociocultural"],
+  [2, "Meio Ambiente", "TBL", "meio-ambiente"],
+  [3, "Econômico", "TBL", "economico"],
+  [4, "Aluno, Sociedade e Financiadores Públicos", "BSC", "cliente"],
+  [5, "Processos Internos", "BSC", "processos-internos"],
+  [6, "Aprendizagem e Crescimento", "BSC", "aprendizagem"],
+  [7, "Recursos Financeiros e Infraestrutura", "BSC", "financeira"]
+]
