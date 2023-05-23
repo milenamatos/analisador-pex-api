@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class CrossingMatrix extends Model {
+  class Crossing extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -13,13 +13,13 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  CrossingMatrix.init({
+  Crossing.init({
     indicator_id: DataTypes.INTEGER,
     goal_id: DataTypes.INTEGER,
-    relation: DataTypes.ENUM
+    relation: DataTypes.ENUM('X', 'I', 'O', 'IO')
   }, {
     sequelize,
-    modelName: 'CrossingMatrix',
+    modelName: 'Crossing',
   });
-  return CrossingMatrix;
+  return Crossing;
 };

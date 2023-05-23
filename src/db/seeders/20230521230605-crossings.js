@@ -25,12 +25,12 @@ const itemsToInsert = crossings.reduce(
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    return queryInterface.bulkInsert('crossing_matrix',
+    return queryInterface.bulkInsert('Crossings',
       itemsToInsert.filter((item) => item.relation !== '')
     );
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('crossing_matrix', null, {});
+    await queryInterface.bulkDelete('Crossings', null, {});
   }
 };

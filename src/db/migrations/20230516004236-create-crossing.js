@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('crossing_matrix', {
+    await queryInterface.createTable('Crossings', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -11,11 +11,11 @@ module.exports = {
       },
       indicator_id: {
         type: Sequelize.INTEGER,
-        references: { model: 'indicators', key: 'id' }
+        references: { model: 'Indicators', key: 'id' }
       },
       goal_id: {
         type: Sequelize.INTEGER,
-        references: { model: 'goals', key: 'id' }
+        references: { model: 'Goals', key: 'id' }
       },
       relation: {
         allowNull: false,
@@ -32,6 +32,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('crossing_matrix');
+    await queryInterface.dropTable('Crossings');
   }
 };

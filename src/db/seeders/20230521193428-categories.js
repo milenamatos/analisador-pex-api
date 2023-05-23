@@ -6,7 +6,7 @@ const categories = require('./assets/categories.json')
 
 module.exports = {
   async up (queryInterface, Sequelize) {
-    return queryInterface.bulkInsert('categories', 
+    return queryInterface.bulkInsert('Categories', 
       categories.map((category) => ({
         id: category[0],
         title: category[1],
@@ -19,6 +19,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('categories', null, {});
+    await queryInterface.bulkDelete('Categories', null, {});
   }
 };

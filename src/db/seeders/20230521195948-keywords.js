@@ -6,7 +6,7 @@ const keywords = require('./assets/keywords.json')
 
 module.exports = {
   async up (queryInterface, Sequelize) {
-    return queryInterface.bulkInsert('keywords', 
+    return queryInterface.bulkInsert('Keywords', 
       keywords.map((keyword) => ({
         name: keyword[1],
         goal_id: keyword[0],
@@ -17,6 +17,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('keywords', null, {});
+    await queryInterface.bulkDelete('Keywords', null, {});
   }
 };

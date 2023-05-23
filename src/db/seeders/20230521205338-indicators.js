@@ -6,7 +6,7 @@ const indicators = require('./assets/indicators.json')
 
 module.exports = {
   async up (queryInterface, Sequelize) {
-    return queryInterface.bulkInsert('indicators', 
+    return queryInterface.bulkInsert('Indicators', 
       indicators.map((indicator, index) => ({
         id: index+1,
         name: indicator[1],
@@ -19,6 +19,6 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('indicators', null, {});
+    await queryInterface.bulkDelete('Indicators', null, {});
   }
 };
