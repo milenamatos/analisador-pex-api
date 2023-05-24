@@ -6,9 +6,11 @@ exports.get = async (req, res) => {
         include: {
             model: Goal,
             attributes: ['id'],
+            required: true,
             include: {
                 model: Category,
-                attributes: ['label']
+                attributes: ['label'],
+                required: true
             }
         }
     });
