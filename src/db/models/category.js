@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(models['Goal'], {
         foreignKey: 'category_id'
       })
+
+      this.hasMany(models['Indicator'], {
+        foreignKey: 'category_id'
+      })
     }
   }
   Category.init({
