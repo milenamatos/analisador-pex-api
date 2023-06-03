@@ -2,7 +2,7 @@ const { Keyword, Goal, Category } = require('../db/models')
 
 exports.get = async (req, res) => {
     const data = await Keyword.findAll({
-        attributes: ['name'],
+        attributes: ['id', 'name'],
         include: {
             model: Goal,
             attributes: ['id'],
@@ -15,5 +15,5 @@ exports.get = async (req, res) => {
         }
     });
 
-    return res.status(200).json({ data });
+    return res.status(200).json(data);
 }
