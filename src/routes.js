@@ -1,7 +1,6 @@
 const express = require('express');
 
-const keywordController = require('./controllers/keywordController.js')
-const indicatorController = require('./controllers/indicatorController.js')
+const { keywordController, indicatorController } = require('./controllers')
 
 const router = express.Router();
 
