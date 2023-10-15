@@ -1,4 +1,4 @@
-const { Indicator, Category } = require('../db/models')
+const { Indicator, Category } = require('../../db/models')
 
 exports.get = async (req, res) => {
     const data = await Indicator.findAll({

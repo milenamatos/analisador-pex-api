@@ -1,11 +1,11 @@
-const { Keyword, Goal, Category } = require('../db/models')
+const { Keyword, Goal, Category } = require('../../db/models')
 
 exports.get = async (req, res) => {
     const data = await Keyword.findAll({
         attributes: ['id', 'name'],
         include: {
             model: Goal,
-            attributes: ['id'],
+            attributes: ['id', 'name'],
             required: true,
             include: {
                 model: Category,
