@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { keywordController, indicatorController, goalController } 
+const { keywordController, indicatorController, analysisController } 
   = require('./controllers')
 
 const router = express.Router();
@@ -9,6 +9,6 @@ router.get("/keywords", keywordController.get);
 
 router.get("/indicators", indicatorController.get);
 
-router.post("/goals", goalController.get);
+router.post("/analysis", analysisController.analyse);
 
 module.exports = router

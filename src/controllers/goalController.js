@@ -1,7 +1,7 @@
 const { Op, Sequelize } = require("sequelize");
 const { Crossings } = require('../../db/models')
 
-exports.get = async (req, res) => {
+exports.getRelated = async (req, res) => {
 	const { goals, indicators } = req.body
     
 	const directRelations = await Crossings.findAll({
@@ -50,5 +50,5 @@ exports.get = async (req, res) => {
 			indirect: indirectRelations.find(d => d.indicator_id === item)?.dataValues?.goals || []
 		}))
 
-    return res.status(200).json(data);
+    return data;
 }
