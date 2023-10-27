@@ -1,9 +1,9 @@
 const { Op, Sequelize } = require("sequelize");
-const { Crossings } = require('../../db/models')
+const { Crossings, Goal } = require('../../db/models')
 
-exports.getRelated = async (req, res) => {
-	const { goals, indicators } = req.body
-    
+exports.getRelated = async (body) => {
+	const { goals, indicators } = body
+
 	const directRelations = await Crossings.findAll({
 		attributes: [
 			'indicator_id',
@@ -11,18 +11,20 @@ exports.getRelated = async (req, res) => {
 		],
 		group: 'indicator_id',
 		where: {
-			[Op.and] : [
+			[Op.and]: [
 				{ indicator_id: indicators },
-				{ [Op.or]: {
-					relation: 'X',
-					[Op.and]: [
-						{ relation: 'O'},
-						{ goal_id: goals }
-					]}
+				{
+					[Op.or]: {
+						relation: 'X',
+						[Op.and]: [
+							{ relation: 'O' },
+							{ goal_id: goals }
+						]
+					}
 				}
 			]
 		}
-    });
+	});
 
 	const indirectRelations = await Crossings.findAll({
 		attributes: [
@@ -31,24 +33,48 @@ exports.getRelated = async (req, res) => {
 		],
 		group: 'indicator_id',
 		where: {
-			[Op.and] : [
+			[Op.and]: [
 				{ indicator_id: indicators },
-				{ [Op.or]: {
-					relation: 'I',
-					[Op.and]: [
-						{ relation: 'IO'},
-						{ goal_id: goals }
-					]}
+				{
+					[Op.or]: {
+						relation: 'I',
+						[Op.and]: [
+							{ relation: 'IO' },
+							{ goal_id: goals }
+						]
+					}
 				}
 			]
 		}
-    });
+	});
 
-		const data = indicators.map(item => ({
-			indicator_id: item,
-			direct: directRelations.find(d => d.indicator_id === item)?.dataValues?.goals || [],
-			indirect: indirectRelations.find(d => d.indicator_id === item)?.dataValues?.goals || []
-		}))
+	const data = indicators.map(item => ({
+		indicator_id: item,
+		direct: directRelations.find(d => d.indicator_id === item)?.dataValues?.goals || [],
+		indirect: indirectRelations.find(d => d.indicator_id === item)?.dataValues?.goals || []
+	}))
 
-    return data;
+	return data;
+}
+
+exports.getDistribution = async (body) => {
+	const { indicators } = body
+
+	const result = await Crossings.count({
+		attributes: [
+			'goal_id'
+		],
+		group: ['goal_id', 'relation'],
+		where: {
+			indicator_id: indicators
+		}
+	});
+
+	const data = result.map(item => ({
+		id: item.goal_id,
+		relation: (['X', 'O'].includes(item.relation)) ? 'direct' : 'indirect',
+		count: item.count
+	}))
+
+	return data;
 }
