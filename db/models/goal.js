@@ -18,6 +18,10 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(models['Category'], {
         foreignKey: 'category_id'
       })
+
+      this.hasMany(models['Crossings'], {
+        foreignKey: 'goal_id'
+      })
     }
   }
   Goal.init({
