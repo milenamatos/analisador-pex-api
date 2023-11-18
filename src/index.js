@@ -14,6 +14,6 @@ app.get("/", (req, res) => {
   return res.json({ message: "AVEX API" });
 })
 
-app.listen(3001, () => {
+app.listen(process.env.PORT || 3001, () => {
   console.log('listening on port 3001');
 });
