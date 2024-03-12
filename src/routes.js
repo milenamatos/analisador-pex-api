@@ -1,9 +1,11 @@
 const express = require('express');
 
-const { keywordController, indicatorController, analysisController } 
+const { keywordController, indicatorController, analysisController, goalController } 
   = require('./controllers')
 
 const router = express.Router();
+
+router.get("/goals", goalController.get);
 
 router.get("/keywords", keywordController.get);
 

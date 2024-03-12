@@ -1,5 +1,18 @@
 const { Op, Sequelize } = require("sequelize");
-const { Crossings, Goal } = require('../../db/models')
+const { Crossings, Goal, Category } = require('../../db/models')
+
+exports.get = async (req, res) => {
+	const data = await Goal.findAll({
+			attributes: ['id', 'name'],
+			include: {
+					model: Category,
+					attributes: ['label'],
+					required: true
+			}
+	});
+
+	return res.status(200).json(data);
+}
 
 exports.getRelated = async (body) => {
 	const { goals, indicators } = body
@@ -58,7 +71,7 @@ exports.getRelated = async (body) => {
 }
 
 exports.getDistribution = async (body) => {
-	const { indicators } = body
+	const { indicators, goals } = body
 
 	const result = await Crossings.count({
 		attributes: [
@@ -66,7 +79,31 @@ exports.getDistribution = async (body) => {
 		],
 		group: ['goal_id', 'relation'],
 		where: {
-			indicator_id: indicators
+			[Op.and]: [
+				{ indicator_id: indicators },
+				{
+					[Op.or]: [
+						{ 
+							[Op.or]: {
+								relation: 'X',
+								[Op.and]: [
+									{ relation: 'O' },
+									{ goal_id: goals }
+								]
+							}
+						},
+						{
+							[Op.or]: {
+								relation: 'I',
+								[Op.and]: [
+									{ relation: 'IO' },
+									{ goal_id: goals }
+								]
+							}
+						}
+					]
+				}
+			]
 		}
 	});
 
