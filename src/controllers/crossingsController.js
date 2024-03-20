@@ -7,7 +7,7 @@ exports.getPoints = async (body) => {
 	const result = await sequelize.query(
 		`WITH subquery as 
 		(
-			SELECT c.title as indicator, i.id as indicator_id, cg.title as goal, g.id as goal_id, relation
+			SELECT c.title as indicator, c.id as indicator_category, i.id as indicator_id, cg.title as goal, g.id as goal_id, relation
 			FROM "Crossings"
 			INNER JOIN "Indicators" i on i.id = indicator_id
 			INNER JOIN "Categories" c on c.id = i.category_id
@@ -45,8 +45,8 @@ exports.getPoints = async (body) => {
 		) as points
 		
 		FROM subquery s
-		GROUP BY indicator, goal
-		ORDER BY indicator, goal desc`, 
+		GROUP BY indicator, indicator_category, goal
+		ORDER BY indicator_category, goal desc`, 
 	{ 
 		type: QueryTypes.SELECT,
 		replacements: { indicators, goals }
