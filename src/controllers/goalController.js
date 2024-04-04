@@ -6,7 +6,7 @@ exports.get = async (req, res) => {
 			attributes: ['id', 'name'],
 			include: {
 					model: Category,
-					attributes: ['label'],
+					attributes: ['label', 'title'],
 					required: true
 			}
 	});
