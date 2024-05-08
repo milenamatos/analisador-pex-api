@@ -1,5 +1,6 @@
 'use strict';
 
+const indicator = require('../models/indicator');
 /** @type {import('sequelize-cli').Migration} */
 
 const indicators = require('./assets/indicators.json')
@@ -12,6 +13,8 @@ module.exports = {
         name: indicator[1],
         description: indicator[2],
         category_id: indicator[0],
+        objective: indicator[3],
+        formula: indicator[4],
         createdAt: new Date(),
         updatedAt: new Date()
       }))

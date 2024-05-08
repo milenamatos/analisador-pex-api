@@ -19,7 +19,9 @@ module.exports = (sequelize, DataTypes) => {
   Indicator.init({
     name: DataTypes.STRING,
     description: DataTypes.STRING,
-    category_id: DataTypes.INTEGER
+    category_id: DataTypes.INTEGER,
+    objective: DataTypes.STRING,
+    formula: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Indicator',
