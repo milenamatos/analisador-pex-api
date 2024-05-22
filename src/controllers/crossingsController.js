@@ -2,7 +2,17 @@ const { QueryTypes } = require("sequelize");
 const { sequelize } = require('../../db/models')
 
 exports.getPoints = async (body) => {
-	const { goals, indicators } = body
+	const { goals, indicators, removedItems } = body
+
+	const removeItemsQuery = removedItems.length ?
+		removedItems.map(item => {
+			return `AND NOT (
+				s.indicator_id = ${item.indicatorId}
+				AND s.goal_id = ${item.goalId}
+			  AND s.relation IN (${item.type == 'direct' ? `'X', 'O'` : `'I', 'IO'`})
+			)`
+		}).join(" ")
+		: ""
 
 	const result = await sequelize.query(
 		`WITH subquery as 
@@ -18,6 +28,7 @@ exports.getPoints = async (body) => {
 		(
 				SELECT * FROM subquery s
 				WHERE s.indicator_id IN(:indicators)
+				${removeItemsQuery}
 		)
 			
 		SELECT indicator, goal,  
@@ -46,22 +57,22 @@ exports.getPoints = async (body) => {
 		
 		FROM subquery s
 		GROUP BY indicator, indicator_category, goal
-		ORDER BY indicator_category, goal desc`, 
-	{ 
-		type: QueryTypes.SELECT,
-		replacements: { indicators, goals }
-	});
+		ORDER BY indicator_category, goal desc`,
+		{
+			type: QueryTypes.SELECT,
+			replacements: { indicators, goals, removeItemsQuery }
+		});
 
-	const formattedData = result.reduce((result, {indicator, goal, points}) => {
+	const formattedData = result.reduce((result, { indicator, goal, points }) => {
 		const foundItem = result.find(i => i.indicator === indicator)
 		if (!foundItem) {
 			result.push({
-				indicator, 
-				goals: [{goal, points}]
+				indicator,
+				goals: [{ goal, points }]
 			})
 		}
 		else {
-			foundItem.goals.push({goal, points})
+			foundItem.goals.push({ goal, points })
 		}
 		return result;
 	}, [])

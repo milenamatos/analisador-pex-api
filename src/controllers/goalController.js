@@ -3,12 +3,12 @@ const { Crossings, Goal, Category } = require('../../db/models')
 
 exports.get = async (req, res) => {
 	const data = await Goal.findAll({
-			attributes: ['id', 'name'],
-			include: {
-					model: Category,
-					attributes: ['label', 'title'],
-					required: true
-			}
+		attributes: ['id', 'name'],
+		include: {
+			model: Category,
+			attributes: ['label', 'title'],
+			required: true
+		}
 	});
 
 	return res.status(200).json(data);
@@ -71,7 +71,17 @@ exports.getRelated = async (body) => {
 }
 
 exports.getDistribution = async (body) => {
-	const { indicators, goals } = body
+	const { indicators, goals, removedItems } = body
+
+	const removeItemsQuery = removedItems.length ?
+		removedItems.map(item => ({
+			[Op.not]: [
+				{ indicator_id: item.indicatorId },
+				{ goal_id: item.goalId },
+				{ relation: (item.type == 'direct') ? ['X', 'O'] : ['I', 'IO'] }
+			]
+		}))
+		: []
 
 	const result = await Crossings.count({
 		attributes: [
@@ -83,7 +93,7 @@ exports.getDistribution = async (body) => {
 				{ indicator_id: indicators },
 				{
 					[Op.or]: [
-						{ 
+						{
 							[Op.or]: {
 								relation: 'X',
 								[Op.and]: [
@@ -102,7 +112,8 @@ exports.getDistribution = async (body) => {
 							}
 						}
 					]
-				}
+				},
+				[...removeItemsQuery]
 			]
 		}
 	});
