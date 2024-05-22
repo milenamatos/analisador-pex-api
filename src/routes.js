@@ -13,4 +13,6 @@ router.get("/indicators", indicatorController.get);
 
 router.post("/analysis", analysisController.analyse);
 
+router.post("/pre-analysis", analysisController.preAnalyse);
+
 module.exports = router
